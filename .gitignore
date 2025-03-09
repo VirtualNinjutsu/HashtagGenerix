@@ -1,0 +1,43 @@
+# Node.js
+node_modules/
+dist/
+build/
+
+# TypeScript
+*.tsbuildinfo
+
+# Python
+venv/
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pdb
+
+# Logs
+*.log
+
+# Package files
+*.zip
+*.tar.gz
+*.rar
+
+# Compiled files
+*.exe
+*.dll
+*.so
+*.dylib
+
+# Temporary files
+*.tmp
+*.temp
+*.swp
+*.swo
+*.bak
+*.old
+
+# IDE files
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace

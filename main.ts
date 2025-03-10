@@ -59,7 +59,7 @@ export default class HashtagGenerix extends Plugin {
                     try {
                         const result = JSON.parse(stdout);
                         console.log(`Результат: ${JSON.stringify(result)}`);
-                        // Здесь вы можете обработать результат, например, вставить теги в заметку
+                 
                         const tagsString = result.matching_tags.map((tag: string) => `#${tag}`).join(' ');
                         editor.replaceSelection(tagsString);
                     } catch (parseError: any) {
@@ -93,9 +93,8 @@ export function uniqueArray(array: any[]) {
 
 export function getFileTags(app: App, file: TFile) {
     const cache = app.metadataCache.getFileCache(file);
-    const tags: string[] = cache ? uniqueArray(getAllTags(cache) || []) : []; // If a tag is defined multiple times in the same file, getTags() returns it multiple times, so use uniqueArray() to iron out duplicates.
+    const tags: string[] = cache ? uniqueArray(getAllTags(cache) || []) : []; 
 
-    // Remove preceding hash characters. E.g. #tag becomes tag
     tags.forEach((tag: string, index) => {
         tags[index] = tag.replace("#", "");
     });

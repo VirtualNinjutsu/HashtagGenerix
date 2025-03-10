@@ -1,9 +1,11 @@
 import { Plugin, MarkdownView, App, getAllTags, TFile } from 'obsidian';
 import { spawn } from 'child_process';
 import * as path from 'path';
+import * as fs from 'fs';
 
 export default class HashtagGenerix extends Plugin {
     onload() {
+        // Загрузка переменных окружения из файла .env
         console.log("Плагин включен!");
 
         this.addCommand({
@@ -16,26 +18,32 @@ export default class HashtagGenerix extends Plugin {
                     return;
                 }
 
+                // Получение выделенного текста и тегов
                 const editor = view.editor;
                 const selectedText = editor.getSelection();
                 const tags = this.getExistingHashtags();
                 console.log(`Выделенный текст: ${selectedText}`);
                 console.log(`Теги: ${tags}`);
 
-                const pythonPath = path.resolve('D:\\Projects\\HashtagGenerix\\venv\\Scripts\\python.exe');
-                const scriptPath = path.resolve('D:\\Projects\\HashtagGenerix\\analyzer.py');
+                // Определение путей к файлам из переменных окружения
+                const textFilePath = path.resolve('PATH_YOUR_FOLDER/text.json');
+                const tagsFilePath = path.resolve('PATH_YOUR_FOLDER/tag_list.json');
+
+                // Сохранение selectedText в text.json
+                fs.writeFileSync(textFilePath, JSON.stringify({ text: selectedText }, null, 2));
+                console.log(`Содержимое selectedText сохранено в ${textFilePath}`);
+
+                // Сохранение tags в tag_list.json
+                fs.writeFileSync(tagsFilePath, JSON.stringify({ tags: tags }, null, 2));
+                console.log(`Содержимое tags сохранено в ${tagsFilePath}`);
+
+                // Определение путей к Python интерпретатору и скрипту из переменных окружения
+                const pythonPath = path.resolve('PATH_YOUR_FOLDER/venv/Scripts/python.exe');
+                const scriptPath = path.resolve('PATH_YOUR_FOLDER/analyzer.py');
                 console.log(`Путь к Python интерпретатору: ${pythonPath}`);
                 console.log(`Путь к Python скрипту: ${scriptPath}`);
 
-                // Используем JSON.stringify для безопасного формирования аргументов
-                const textArg = JSON.stringify(selectedText);
-                const tagsArg = JSON.stringify(tags);
-
-                // Формируем команду
-                const args = [scriptPath, textArg, tagsArg];
-                console.log(`Аргументы для Python: ${args}`);
-
-                const pythonProcess = spawn(pythonPath, args, {
+                const pythonProcess = spawn(pythonPath, [scriptPath], {
                     shell: true
                 });
 
@@ -59,9 +67,7 @@ export default class HashtagGenerix extends Plugin {
                     try {
                         const result = JSON.parse(stdout);
                         console.log(`Результат: ${JSON.stringify(result)}`);
-                 
-                        const tagsString = result.matching_tags.map((tag: string) => `#${tag}`).join(' ');
-                        editor.replaceSelection(tagsString);
+                    
                     } catch (parseError: any) {
                         console.error(`Ошибка парсинга результата: ${parseError.message}`);
                     }
@@ -94,7 +100,7 @@ export function uniqueArray(array: any[]) {
 export function getFileTags(app: App, file: TFile) {
     const cache = app.metadataCache.getFileCache(file);
     const tags: string[] = cache ? uniqueArray(getAllTags(cache) || []) : []; 
-
+    
     tags.forEach((tag: string, index) => {
         tags[index] = tag.replace("#", "");
     });

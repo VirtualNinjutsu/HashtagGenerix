@@ -1,7 +1,7 @@
 {
     "id": "hashtag-generix",
     "name": "Hashtag Generix",
-    "version": "0.1.0",
+    "version": "0.2.0",
     "minAppVersion": "1.8.9",
     "description": "Generates hashtags for notes from existing ones, as well as suggests new ones.",
     "author": "VirtualNinjutsu",

@@ -128,20 +128,14 @@ def search_tags(text, tag_list, language, top_n=6):
 
 if __name__ == "__main__":
 
-    # Проверка аргументов
-    if len(sys.argv) < 3:
-        print(json.dumps({"error": "Not enough arguments. Expected: text, tag_list"}))
-        sys.exit(1)
-
-    # Логирование аргументов
-    print(f"Аргументы: {sys.argv}", file=sys.stderr)
-
+    # Чтение данных из файлов
     try:
-        input_text = sys.argv[1]
-        tag_list = sys.argv[2]
-        # tag_list = json.loads(tag_list)
+        with open('./text.json', 'r', encoding='utf-8') as text_file:
+            input_text = json.load(text_file)['text']
+        with open('./tag_list.json', 'r', encoding='utf-8') as tags_file:
+            tag_list = json.load(tags_file)['tags']
     except Exception as e:
-        print(json.dumps({"error": f"Failed to parse arguments: {str(e)}"}))
+        print(json.dumps({"error": f"Failed to read input files: {str(e)}"}))
         sys.exit(1)
 
     # Логирование передаваемых данных

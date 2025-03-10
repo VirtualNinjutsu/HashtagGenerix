@@ -1,0 +1,6 @@
+nltk
+langdetect
+stop-words
+pymorphy2
+scikit-learn
+pandas

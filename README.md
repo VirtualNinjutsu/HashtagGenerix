@@ -20,7 +20,7 @@ HashtagGenerix — это плагин для Obsidian, который авто�
 2. **Настройка виртуального окружения (Python):**
 
    ```sh
-   python -m venv myenv
+   python -m venv venv
    myenv\Scripts\activate  # Windows
    source myenv/bin/activate  # macOS/Linux
    ```
